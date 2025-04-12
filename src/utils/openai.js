@@ -1,5 +1,5 @@
 const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-const API_URL = "/api/proxy"; // Изменяем URL на локальный эндпоинт
+const API_URL = "https://api.intelligence.io.solutions/api/v1/chat/completions"; // Изменяем URL на прямой
 const prompt = `Генерируй только ровно 10 цитат в следующем формате !!!
 Каждая цитата начинается с номера и точки.
 Не используй теги и не добавляй пояснений.
@@ -45,10 +45,6 @@ const cleanResponse = (text) => {
 
 export const fetchQuoteFromOpenAI = async (userInput) => {
   try {
-    if (!API_KEY) {
-      throw new Error("API ключ не найден. Проверьте файл .env");
-    }
-
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
@@ -77,18 +73,7 @@ export const fetchQuoteFromOpenAI = async (userInput) => {
     }
 
     const data = await response.json();
-
-    if (
-      !data ||
-      !data.choices ||
-      !data.choices[0] ||
-      !data.choices[0].message
-    ) {
-      throw new Error("Некорректный ответ от API");
-    }
-
-    const cleanedResponse = cleanResponse(data.choices[0].message.content);
-    return cleanedResponse;
+    return cleanResponse(data.choices[0].message.content);
   } catch (error) {
     console.error("Ошибка при получении цитаты:", error);
     return `Ошибка: ${error.message}`;
