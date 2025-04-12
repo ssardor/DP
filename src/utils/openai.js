@@ -1,5 +1,6 @@
 const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-const API_URL = "https://api.intelligence.io.solutions/api/v1/chat/completions"; // Это будет работать и локально, и на Vercel
+const BASE_URL =
+  "https://api.intelligence.io.solutions/api/v1/chat/completions";
 const prompt = `Генерируй только ровно 10 цитат в следующем формате !!!
 Каждая цитата начинается с номера и точки.
 Не используй теги и не добавляй пояснений.
@@ -49,12 +50,11 @@ export const fetchQuoteFromOpenAI = async (userInput) => {
       throw new Error("API ключ не найден");
     }
 
-    const response = await fetch(API_URL, {
+    const response = await fetch(BASE_URL, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
         model: "deepseek-ai/DeepSeek-R1",
