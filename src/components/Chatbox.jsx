@@ -14,7 +14,6 @@ const ChatBox = () => {
     setLoading(true);
     const result = await fetchQuoteFromOpenAI(input);
     // Разбиваем результат на отдельные цитаты
-    {console.log(result)}
     const quotesArray = result.split("\n").filter((quote) => quote.trim());
     setQuotes(quotesArray);
     setCurrentQuoteIndex(0);
