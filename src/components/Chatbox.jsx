@@ -12,12 +12,20 @@ const ChatBox = () => {
   const handleSend = async () => {
     if (!input) return;
     setLoading(true);
-    const result = await fetchQuoteFromOpenAI(input);
-    // Разбиваем результат на отдельные цитаты
-    const quotesArray = result.split("\n").filter((quote) => quote.trim());
-    setQuotes(quotesArray);
-    setCurrentQuoteIndex(0);
-    setLoading(false);
+    try {
+      const result = await fetchQuoteFromOpenAI(input);
+      if (result.startsWith("Ошибка:")) {
+        throw new Error(result);
+      }
+      const quotesArray = result.split("\n").filter((quote) => quote.trim());
+      setQuotes(quotesArray);
+      setCurrentQuoteIndex(0);
+    } catch (error) {
+      console.error("Ошибка:", error);
+      // Можно добавить отображение ошибки пользователю
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleNext = () => {

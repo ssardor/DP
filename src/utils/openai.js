@@ -1,6 +1,5 @@
 const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-const BASE_URL =
-  "https://api.intelligence.io.solutions/api/v1/chat/completions";
+const API_URL = "https://api.intelligence.io.solutions/api/v1/chat/completions";
 const prompt = `Генерируй только ровно 10 цитат в следующем формате !!!
 Каждая цитата начинается с номера и точки.
 Не используй теги и не добавляй пояснений.
@@ -50,33 +49,35 @@ export const fetchQuoteFromOpenAI = async (userInput) => {
       throw new Error("API ключ не найден");
     }
 
-    const response = await fetch(BASE_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
-      mode: "cors",
-      credentials: "same-origin",
-      body: JSON.stringify({
-        model: "deepseek-ai/DeepSeek-R1",
-        messages: [
-          {
-            role: "system",
-            content: prompt,
-          },
-          {
-            role: "user",
-            content: `Сгенерируй 10 цитат на тему "${userInput}"`,
-          },
-        ],
-        max_tokens: 500,
-        temperature: 0.7,
-      }),
-    });
+    const response = await fetch(
+      "https://api.intelligence.io.solutions/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${API_KEY}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+        mode: "cors",
+        body: JSON.stringify({
+          model: "deepseek-ai/DeepSeek-R1",
+          messages: [
+            {
+              role: "system",
+              content: prompt,
+            },
+            {
+              role: "user",
+              content: `Сгенерируй 10 цитат на тему "${userInput}"`,
+            },
+          ],
+          max_tokens: 500,
+          temperature: 0.7,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Ошибка API: ${response.status}`);
