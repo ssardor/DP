@@ -9,8 +9,12 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type, Authorization"
-        }
+        },
+        { "key": "Access-Control-Allow-Credentials", "value": "true" }
       ]
     }
-  ]
+  ],
+  "env": {
+    "REACT_APP_OPENAI_API_KEY": "@react_app_openai_api_key"
+  }
 }
