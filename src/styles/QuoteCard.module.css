@@ -1,0 +1,44 @@
+.card {
+  background-color: #1a1a1a;
+  border-radius: 18px;
+  padding: 32px;
+  width: 600px; /* Фиксированная ширина */
+  min-height: 200px; /* Минимальная высота */
+  color: white;
+  font-size: 20px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+  margin: 0 auto; /* Центрирование */
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.text {
+  line-height: 1.6;
+  margin: 0;
+  text-align: center;
+}
+
+/* Стили для состояния загрузки */
+.loading {
+  background-color: #1a1a1a;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
