@@ -1,5 +1,5 @@
-const API_KEY = process.env.REACT_APP_OPENAI_API_KEY; // Ваш API ключ OpenAI
-const API_URL = "https://api.intelligence.io.solutions/api/v1/chat/completions"; // URL API OpenAI
+const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+const API_URL = "/api/proxy"; // Изменяем URL на локальный эндпоинт
 const prompt = `Генерируй только ровно 10 цитат в следующем формате !!!
 Каждая цитата начинается с номера и точки.
 Не используй теги и не добавляй пояснений.
@@ -25,21 +25,22 @@ console.log("API KEY value:", API_KEY);
 
 const cleanResponse = (text) => {
   if (!text) return "";
-  
+
   // Удаляем всё, что находится до первой цифры с точкой
-  let cleaned = text.replace(/^[\s\S]*?(?=1\.)/g, '');
-  
+  let cleaned = text.replace(/^[\s\S]*?(?=1\.)/g, "");
+
   // Разбиваем на строки и фильтруем
-  const lines = cleaned.split('\n')
-    .map(line => line.trim())
-    .filter(line => /^\d+\./.test(line)); // Оставляем только строки, начинающиеся с цифры и точки
-  
+  const lines = cleaned
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => /^\d+\./.test(line)); // Оставляем только строки, начинающиеся с цифры и точки
+
   // Проверяем, что получили хотя бы одну цитату
   if (lines.length === 0) {
     throw new Error("Ответ не содержит цитат в правильном формате");
   }
-  
-  return lines.join('\n');
+
+  return lines.join("\n");
 };
 
 export const fetchQuoteFromOpenAI = async (userInput) => {
@@ -50,20 +51,23 @@ export const fetchQuoteFromOpenAI = async (userInput) => {
 
     const response = await fetch(API_URL, {
       method: "POST",
+      mode: "cors", // Добавляем явное указание режима
+      credentials: "same-origin", // Добавляем credentials
       headers: {
-        "Authorization": `Bearer ${API_KEY.trim()}`,
+        Authorization: `Bearer ${API_KEY.trim()}`,
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*", // Добавляем CORS заголовок
       },
       body: JSON.stringify({
         model: "deepseek-ai/DeepSeek-R1",
         messages: [
-          { 
-            role: "system", 
-            content: prompt 
+          {
+            role: "system",
+            content: prompt,
           },
-          { 
-            role: "user", 
-            content: `Сгенерируй 10 цитат на тему "${userInput}"` 
+          {
+            role: "user",
+            content: `Сгенерируй 10 цитат на тему "${userInput}"`,
           },
         ],
         max_tokens: 500,
@@ -76,14 +80,18 @@ export const fetchQuoteFromOpenAI = async (userInput) => {
     }
 
     const data = await response.json();
-    
-    if (!data || !data.choices || !data.choices[0] || !data.choices[0].message) {
+
+    if (
+      !data ||
+      !data.choices ||
+      !data.choices[0] ||
+      !data.choices[0].message
+    ) {
       throw new Error("Некорректный ответ от API");
     }
 
     const cleanedResponse = cleanResponse(data.choices[0].message.content);
     return cleanedResponse;
-
   } catch (error) {
     console.error("Ошибка при получении цитаты:", error);
     return `Ошибка: ${error.message}`;
