@@ -51,12 +51,9 @@ export const fetchQuoteFromOpenAI = async (userInput) => {
 
     const response = await fetch(API_URL, {
       method: "POST",
-      mode: "cors", // Добавляем явное указание режима
-      credentials: "same-origin", // Добавляем credentials
       headers: {
-        Authorization: `Bearer ${API_KEY.trim()}`,
+        Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*", // Добавляем CORS заголовок
       },
       body: JSON.stringify({
         model: "deepseek-ai/DeepSeek-R1",

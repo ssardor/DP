@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "headers": [
     {
       "source": "/api/(.*)",
@@ -14,6 +15,17 @@
     {
       "source": "/api/:path*",
       "destination": "/api/proxy"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/proxy",
+      "methods": ["POST", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      }
     }
   ],
   "functions": {
