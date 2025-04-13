@@ -32,14 +32,19 @@ console.log("API_URL:", API_URL);
 const cleanResponse = (text) => {
   if (!text) return "";
 
+  console.log("Raw API response:", text);
+
   // Удаляем всё, что находится до первой цифры с точкой
   let cleaned = text.replace(/^[\s\S]*?(?=1\.)/g, "");
+  console.log("Cleaned response:", cleaned);
 
   // Разбиваем на строки и фильтруем
   const lines = cleaned
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => /^\d+\./.test(line)); // Оставляем только строки, начинающиеся с цифры и точки
+
+  console.log("Filtered lines:", lines);
 
   // Проверяем, что получили хотя бы одну цитату
   if (lines.length === 0) {
@@ -57,7 +62,7 @@ export const fetchQuoteFromOpenAI = async (userInput) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "deepseek-ai/DeepSeek-R1",
+        model: "meta-llama/Llama-3.3-70B-Instruct",
         messages: [
           {
             role: "system",
