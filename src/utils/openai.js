@@ -1,5 +1,8 @@
 const API_KEY = process.env.AI_API_KEY;
-const API_URL = "/api/proxy";
+const API_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8888/.netlify/functions/proxy"
+    : "/api/proxy";
 const prompt = `Генерируй только ровно 10 цитат в следующем формате !!!
 Каждая цитата начинается с номера и точки.
 Не используй теги и не добавляй пояснений.
@@ -48,14 +51,9 @@ const cleanResponse = (text) => {
 
 export const fetchQuoteFromOpenAI = async (userInput) => {
   try {
-    if (!API_KEY) {
-      throw new Error("API ключ не найден");
-    }
-
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
