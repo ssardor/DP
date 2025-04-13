@@ -1,5 +1,5 @@
 const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-const API_URL = "https://api.intelligence.io.solutions/api/v1/chat/completions";
+const API_URL = "/api/proxy";
 const prompt = `Генерируй только ровно 10 цитат в следующем формате !!!
 Каждая цитата начинается с номера и точки.
 Не используй теги и не добавляй пояснений.
@@ -23,6 +23,9 @@ console.log("API KEY status:", !!API_KEY);
 // Добавьте отладочный вывод полного значения ключа
 console.log("API KEY value:", API_KEY);
 
+console.log("API_KEY:", API_KEY ? "Loaded" : "Not Loaded");
+console.log("API_URL:", API_URL);
+
 const cleanResponse = (text) => {
   if (!text) return "";
 
@@ -45,14 +48,9 @@ const cleanResponse = (text) => {
 
 export const fetchQuoteFromOpenAI = async (userInput) => {
   try {
-    if (!API_KEY) {
-      throw new Error("API ключ не найден");
-    }
-
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
