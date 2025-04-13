@@ -1,6 +1,8 @@
 const fetch = require("node-fetch");
 
 exports.handler = async function (event, context) {
+  console.log("AI_API_KEY in proxy.js:", process.env.AI_API_KEY);
+
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
@@ -18,8 +20,6 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ error: "Method not allowed" }),
     };
   }
-
-  console.log("API Key Loaded:", !!process.env.AI_API_KEY);
 
   try {
     const response = await fetch(
