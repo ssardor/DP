@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  console.log("API Key Loaded:", !!process.env.REACT_APP_OPENAI_API_KEY);
+  console.log("API Key Loaded:", !!process.env.AI_API_KEY);
 
   try {
     const response = await fetch(
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.AI_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(req.body),

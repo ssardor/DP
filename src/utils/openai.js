@@ -1,4 +1,4 @@
-const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+const API_KEY = process.env.AI_API_KEY;
 const API_URL = "/api/proxy";
 const prompt = `Генерируй только ровно 10 цитат в следующем формате !!!
 Каждая цитата начинается с номера и точки.
