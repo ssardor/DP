@@ -1,76 +1,85 @@
-
 .sidebar {
-    width: 260px;
-    background-color: #1a1a1a;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .logo {
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 30px;
-    padding: 20px 0;
-  }
-  
-  .search {
-    padding: 8px;
-    border-radius: 6px;
-    margin-bottom: 16px;
-    background: #000;
-    border: none;
-    color: white;
-  }
-  
-  .menu {
-    flex-grow: 1;
-  }
-  
-  .section {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #aaa;
-  }
-  
-  .menu button {
-    display: block;
-    background: none;
-    border: none;
-    color: white;
-    padding: 14px 16px;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  .menu button:hover {
-    background-color: #333;
-    border-radius: 16px;
-    
-  }
-  
-  .active {
-    background-color: #333;
-    border-radius: 6px;
-  }
-  
-  .profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .profile img {
-    border-radius: 50%;
-    width: 42px;
-    height: 42px;
-    object-fit: cover;
-  }
-  
-  .email {
-    font-size: 12px;
-    color: #888;
-  }
-  
+  width: 330px;
+  background-color: #2e2e35;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 30px 0 30px 30px;
+  border-radius: 16px;
+}
+
+.logo p{
+  font-weight: bold;
+  margin-bottom: 15px 0;
+  font-size: 30px;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+}
+
+.search {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  background: #262626;
+  border: none;
+  color: white;
+}
+
+.menu {
+  flex-grow: 1;
+}
+
+.section {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #aaa;
+}
+
+.menu button {
+  display: block;
+  background: none;
+  border: none;
+  color: white;
+  padding: 14px 16px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+}
+.menu button:hover {
+  background-color: #35353E;
+  border-radius: 16px;
+}
+
+.active {
+  background-color: #333;
+  border-radius: 6px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile img {
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+}
+
+.email {
+  font-size: 12px;
+  color: white;
+}
+
+.nickname p{
+  padding: 5px;
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  margin: 0;
+}
