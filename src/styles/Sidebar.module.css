@@ -1,25 +1,46 @@
 .sidebar {
-  width: 330px;
-  background-color: #2e2e35;
-  padding: 16px;
+  min-height: 98%; /* Устанавливаем высоту на 100% экрана */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin: 30px 0 30px 30px;
+  padding: 0;
+  background-color: #2e2e35;
+  margin: 0;
   border-radius: 16px;
+  overflow-y: auto; /* Добавляем вертикальный скролл, если содержимое превышает высоту */
 }
 
-.logo p{
+.sidebar::-webkit-scrollbar {
+  width: 8px; /* Ширина скроллбара */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #666; /* Цвет ползунка */
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background-color: #1a1a1a; /* Цвет фона скроллбара */
+}
+
+.sidebar a {
+  text-decoration: none; /* Убираем подчёркивание для всех ссылок в Sidebar */
+}
+
+.logo p {
   font-weight: bold;
-  margin-bottom: 15px 0;
+  margin-bottom: 15px;
   font-size: 30px;
   text-align: center;
   color: white;
   text-decoration: none;
 }
-
+.search_container{
+  padding: 0 18px;
+  width: 80%;
+}
 .search {
   padding: 12px;
+  width: 100%;
   border-radius: 6px;
   margin-bottom: 16px;
   background: #262626;
@@ -35,6 +56,8 @@
   margin-top: 20px;
   font-size: 18px;
   color: #aaa;
+  padding: 0 18px;
+  font-weight: bold;
 }
 
 .menu button {
@@ -42,14 +65,14 @@
   background: none;
   border: none;
   color: white;
-  padding: 14px 16px;
+  padding: 14px 38px;
   width: 100%;
   text-align: left;
   cursor: pointer;
   font-size: 16px;
 }
 .menu button:hover {
-  background-color: #35353E;
+  background-color: #35353e;
   border-radius: 16px;
 }
 
@@ -60,8 +83,8 @@
 
 .profile {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  padding: 10px 18px;
+  gap: 10px;
 }
 
 .profile img {
@@ -76,10 +99,95 @@
   color: white;
 }
 
-.nickname p{
+.nickname p {
   padding: 5px;
   font-size: 16px;
   color: white;
   text-decoration: none;
   margin: 0;
+}
+.closeSidebarContainer{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0 18px;
+  justify-content:end
+}
+.closeSidebarBtn {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px ;
+  border-radius: 8px;
+  cursor: pointer;
+  
+}
+
+.closeSidebarBtn:hover {
+  background-color: #555;
+}
+
+/* Адаптивная верстка для телефонов */
+@media (max-width: 768px) {
+  .sidebar {
+   
+    height: 100%; /* Высота на 100% экрана */
+    margin: 0;
+    border-radius: 0;
+    padding: 0;
+    overflow-y: auto; /* Прокрутка для мобильных устройств */
+  }
+
+  .logo p {
+    font-size: 24px;
+  }
+
+  .search {
+    padding: 10px;
+    width: 85%;
+    font-size: 14px;
+  }
+
+  .menu button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .profile {
+    display: flex;
+    gap: 10px;
+    justify-content: start;
+    margin-bottom: 35px;
+    align-items: center;
+  }
+
+  .profile img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nickname p {
+    font-size: 14px;
+  }
+  .email p{
+    font-size: 5px;
+    color: white;
+  }
+  .closeSidebarBtn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  .closeSidebarContainer{
+    padding: 0 10px;
+    margin: 0;
+
+  }
+  .section {
+    font-size: 16px;
+    padding: 0 10px;
+  }
+  .search_container{
+    padding: 0 10px;
+    width: 100%;
+  }
 }
