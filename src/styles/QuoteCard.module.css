@@ -1,9 +1,15 @@
+.cardContainer {
+  width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
 .card {
   background-color: #1a1a1a;
   border-radius: 18px;
   padding: 32px;
-  width: 600px; /* Фиксированная ширина */
-  min-height: 200px; /* Минимальная высота */
+  width: 100%;
+  min-height: 200px;
   color: white;
   font-size: 20px;
   font-style: italic;
@@ -13,7 +19,7 @@
   justify-content: center;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
   transition: transform 0.3s ease;
-  margin: 0 auto; /* Центрирование */
+  margin-bottom: 50px; /* Отступ для кнопок снизу */
 }
 
 .card:hover {
@@ -44,10 +50,20 @@
   }
 }
 
+.cardControls {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Располагаем элементы вертикально */
+  align-items: center;
+  margin-top: -30px;
+  position: relative; /* Для абсолютного позиционирования кнопок */
+}
+
+/* Стрелки навигации по центру */
 .navigation {
   display: flex;
   gap: 20px;
-  margin-top: 20px;
+  margin-left: 10px;
 }
 
 .navigation button {
@@ -63,16 +79,119 @@
   color: #666;
 }
 
+/* Кнопки в правом углу */
+.rightButtons {
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Кнопки слева */
+.leftButtons {
+  display: flex;
+  gap: 10px; /* Отступ между кнопками */
+  position: absolute;
+  left: 0;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #333; /* Цвет фона при наведении */
+}
+
+.actionButton img {
+  width: 24px; /* Размер иконки */
+  height: 24px;
+}
+
+.buttonWrapper {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  margin-bottom: 8px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.popover::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 /* Адаптивная верстка для телефонов */
 @media (max-width: 768px) {
+  .cardContainer {
+    width: 90%;
+    padding: 0 10px;
+  }
+
   .card {
-    width: 90%; /* Уменьшаем ширину карточки */
-    min-height: 150px; /* Уменьшаем минимальную высоту */
-    padding: 20px; /* Уменьшаем внутренние отступы */
-    font-size: 16px; /* Уменьшаем размер текста */
+    min-height: 120px;
+    padding: 10px;
+    font-size: 16px;
   }
 
   .navigation button {
     font-size: 20px; /* Уменьшаем размер кнопок навигации */
+  }
+  .actionButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 10px 7px 10px;
+  }
+
+  .actionButton img {
+    width: 14px; /* Размер иконки */
+    height: 14px;
+  }
+  .rightButtons {
+    display: flex;
+    gap: 0;
   }
 }

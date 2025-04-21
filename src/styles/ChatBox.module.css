@@ -4,7 +4,8 @@
   flex-direction: column;
   background-color: #18181a;
   padding: 0 10px 10px 0;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden; /* Скрываем горизонтальный скролл */
 }
 
 .header {
@@ -25,6 +26,7 @@
   padding-left: 0;
   scrollbar-width: thin; /* Для Firefox */
   flex-grow: 1; /* Заставляем контейнер занимать оставшееся пространство */
+  overflow-x: hidden; /* Скрываем горизонтальный скролл */
 }
 
 .messages::-webkit-scrollbar {
@@ -78,7 +80,7 @@
 
 .inputArea input {
   flex: 1;
-  padding: 30px 16px;
+  padding: 28px 16px;
   font-size: 16px;
   background-color: #262626;
   border: none;
@@ -91,11 +93,25 @@
   background: white;
   border: none;
   border-radius: 12px;
-  padding: 30px;
+  padding: 20px;
   color: black;
   cursor: pointer;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.sendBtn img {
+  width: 30px; /* Размер иконки */
+  height: 30px;
+}
+
+.sendBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6; /* Уменьшаем прозрачность для отключённой кнопки */
+}
+
 .quoteNavigation {
   display: flex;
   align-items: center;
@@ -139,6 +155,7 @@
   background-color: #333; /* Тёмный фон для запроса */
   color: white; /* Белый текст */
   padding: 15px 30px; /* Внутренние отступы */
+  margin: 30px 25px; /* Отступы по бокам */
   border-radius: 12px; /* Скруглённые углы */
   font-size: 18px; /* Размер текста */
   max-width: 70%; /* Ограничиваем ширину */
@@ -169,29 +186,187 @@
   background-color: #555;
 }
 
+.cardActions {
+  display: flex;
+  justify-content: space-between; /* Разделяем кнопки слева и стрелки справа */
+  align-items: center;
+  margin-top: 10px; /* Отступ сверху */
+  padding: 10px 0;
+}
+
+.leftButtons {
+  display: flex;
+  gap: 10px; /* Отступ между кнопками */
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #333; /* Цвет фона при наведении */
+}
+
+.actionButton img {
+  width: 24px; /* Размер иконки */
+  height: 24px;
+}
+
+.navigation {
+  display: flex;
+  gap: 20px;
+}
+
+.navigation button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navigation button:hover {
+  color: #666;
+}
+
+.cardActionsWrapper {
+  display: flex;
+  justify-content: center; /* Центрируем всё содержимое */
+  align-items: center;
+  margin-top: 20px; /* Отступ сверху */
+  width: 100%; /* Ширина равна карточке */
+  position: relative; /* Для позиционирования элементов */
+}
+
+.leftButtons {
+  display: flex;
+  gap: 10px; /* Отступ между кнопками */
+  justify-content: flex-start; /* Выравниваем кнопки слева */
+}
+
+.navigation {
+  display: flex;
+  gap: 20px; /* Отступ между стрелками */
+  justify-content: center; /* Центрируем стрелки */
+}
+
+.navigation button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navigation button:hover {
+  color: #666;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #333; /* Цвет фона при наведении */
+}
+
+.actionButton img {
+  width: 24px; /* Размер иконки */
+  height: 24px;
+}
+
+.cardWrapper {
+  display: flex;
+  align-items: center; /* Выравниваем элементы по вертикали */
+  gap: 20px; /* Отступ между кнопками и карточкой */
+  margin-bottom: 20px; /* Отступ снизу */
+  position: relative; /* Для позиционирования стрелок */
+}
+
+.leftButtons {
+  display: flex;
+  flex-direction: column; /* Располагаем кнопки вертикально */
+  gap: 10px; /* Отступ между кнопками */
+  width: 50px; /* Фиксированная ширина для кнопок */
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #333; /* Цвет фона при наведении */
+}
+
+.actionButton img {
+  width: 24px; /* Размер иконки */
+  height: 24px;
+}
+
+.navigation {
+  position: absolute;
+  right: -60px; /* Располагаем стрелки справа от карточки */
+  display: flex;
+  flex-direction: column; /* Располагаем стрелки вертикально */
+  gap: 10px; /* Отступ между стрелками */
+}
+
+.navigation button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navigation button:hover {
+  color: #666;
+}
+
 /* Адаптивная верстка для телефонов */
 @media (max-width: 768px) {
   .chatBox {
-    padding: 10px;
+    padding: 10px 0;
   }
 
   .messages {
     max-height: calc(100vh - 150px);
     min-height: 400px;
   }
-.query{
+  .query {
     font-size: 14px; /* Уменьшаем размер текста для мобильных устройств */
     padding: 10px 20px; /* Уменьшаем внутренние отступы */
-    max-width: 90%; /* Увеличиваем ширину карточки на мобильных устройствах */
+    max-width: 90%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    /* Увеличиваем ширину карточки на мобильных устройствах */
   }
 
   .inputSection {
-    padding: 10px;
+    padding: 10px 0;
   }
 
   .tags {
     gap: 5px;
-}
+  }
   .tags button {
     padding: 10px 16px;
     font-size: 14px;
@@ -203,7 +378,65 @@
   }
 
   .sendBtn {
-    padding: 20px;
+    padding: 12px;
     font-size: 14px;
+  }
+
+  .tags {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    padding: 10px 20px;
+    margin: 0 -20px;
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .tags::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .tags button {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    white-space: nowrap;
+    padding: 10px 16px;
+    font-size: 14px;
+    margin-right: 8px;
+  }
+
+  .tags button:last-child {
+    margin-right: 0;
+  }
+  .inputArea {
+   padding: 0 10px;
+  
+  }
+  /* Optional: Add fade effect on edges */
+  .inputSection {
+    position: relative;
+  }
+
+  .inputSection::before,
+  .inputSection::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 20px;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .inputSection::before {
+    left: 0;
+    background: linear-gradient(to right, #18181a, transparent);
+  }
+
+  .inputSection::after {
+    right: 0;
+    background: linear-gradient(to left, #18181a, transparent);
   }
 }

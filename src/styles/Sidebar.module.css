@@ -6,7 +6,8 @@
   background-color: #2e2e35;
   margin: 0;
   border-radius: 16px;
-  overflow-y: auto; /* Добавляем вертикальный скролл, если содержимое превышает высоту */
+  overflow-y: auto;
+  overflow-x: hidden; /* Добавляем вертикальный скролл, если содержимое превышает высоту */
 }
 
 .sidebar::-webkit-scrollbar {
@@ -29,23 +30,43 @@
 .logo p {
   font-weight: bold;
   margin-bottom: 15px;
-  font-size: 30px;
+  font-size: 40px;
   text-align: center;
   color: white;
   text-decoration: none;
+  font-size: 24px;
+  margin: 0;
 }
-.search_container{
+.search_container {
   padding: 0 18px;
-  width: 80%;
+  width: 70%;
+}
+.searchWrapper {
+  position: relative;
+  width: 100%;
 }
 .search {
-  padding: 12px;
+  padding: 12px 12px 12px 40px; /* Добавляем отступ слева для иконки */
   width: 100%;
   border-radius: 6px;
-  margin-bottom: 16px;
+ 
   background: #262626;
   border: none;
   color: white;
+}
+
+.search::placeholder {
+  color: #888; /* Цвет текста placeholder */
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 12px; /* Расположение иконки */
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none; /* Иконка не будет мешать вводу текста */
 }
 
 .menu {
@@ -106,23 +127,25 @@
   text-decoration: none;
   margin: 0;
 }
-.closeSidebarContainer{
+.closeSidebarContainer {
   display: flex;
   align-items: center;
   margin-top: 20px;
   padding: 0 18px;
-  justify-content:end
 }
 .closeSidebarBtn {
   background-color: #333;
   color: white;
   border: none;
-  padding: 10px 20px ;
+  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  
 }
-
+.closeSidebarBtn img {
+  color: white;
+  width: 20px;
+  height: 20px;
+}
 .closeSidebarBtn:hover {
   background-color: #555;
 }
@@ -130,7 +153,6 @@
 /* Адаптивная верстка для телефонов */
 @media (max-width: 768px) {
   .sidebar {
-   
     height: 100%; /* Высота на 100% экрана */
     margin: 0;
     border-radius: 0;
@@ -143,7 +165,7 @@
   }
 
   .search {
-    padding: 10px;
+    padding: 15px 10px 10px 40px; /* Уменьшаем отступы */
     width: 85%;
     font-size: 14px;
   }
@@ -157,7 +179,7 @@
     display: flex;
     gap: 10px;
     justify-content: start;
-    margin-bottom: 35px;
+    margin-bottom: 0;
     align-items: center;
   }
 
@@ -169,7 +191,7 @@
   .nickname p {
     font-size: 14px;
   }
-  .email p{
+  .email p {
     font-size: 5px;
     color: white;
   }
@@ -177,17 +199,35 @@
     padding: 8px 16px;
     font-size: 14px;
   }
-  .closeSidebarContainer{
+  .closeSidebarContainer {
     padding: 0 10px;
     margin: 0;
-
   }
   .section {
     font-size: 16px;
     padding: 0 10px;
   }
-  .search_container{
+  .search_container {
     padding: 0 10px;
-    width: 100%;
+    width: 90%;
   }
+}
+.buttonContent {
+  display: flex;
+  align-items: center; /* Выравниваем по вертикали */
+  gap: 10px; /* Отступ между изображением и текстом */
+}
+
+.buttonContent img {
+  width: 20px; /* Устанавливаем фиксированный размер изображения */
+  height: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Распределяем элементы по краям */
+  padding: 0 0 0 20px;
+  padding-top: 20px;
+  margin: 20px 0; /* Отступ снизу */
 }

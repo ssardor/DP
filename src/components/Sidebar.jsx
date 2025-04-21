@@ -1,31 +1,50 @@
 import { Link } from "react-router-dom";
 import styles from "../styles/Sidebar.module.css";
-
+import closeIcon from "../img/X.svg";
+import lineChart from "../img/line-chart-up-01.svg";
+import iconCitation from "../img/IconCitation.png";
+import iconSaved from "../img/IconLiked.svg";
+import searchIcon from "../img/IconSearch.svg";
 const Sidebar = ({ onClose }) => {
   return (
     <div className={styles.sidebar}>
-      {/* Кнопка закрытия для мобильных устройств */}
-     <div className={styles.closeSidebarContainer}>
-     <button className={styles.closeSidebarBtn} onClick={onClose}>
-        X
-      </button>
-     </div>
-
-      <Link to="/">
-        <div className={styles.logo}>
-          <p>DEEPWISDOM</p>
-        </div>
-      </Link>
+      <div className={styles.header}>
+        <Link to="/">
+          <div className={styles.logo}>
+            <p>DEEPWISDOM</p>
+          </div>
+        </Link>
+        <button className={styles.closeSidebarBtn} onClick={onClose}>
+          <img src={closeIcon} alt="Закрыть" />
+        </button>
+      </div>
 
       <div className={styles.search_container}>
-      <input className={styles.search} type="text" placeholder="Поиск..." />
-
+        <div className={styles.searchWrapper}>
+          <img className={styles.searchIcon} src={searchIcon} alt="Поиск" />
+          <input className={styles.search} type="text" placeholder="Поиск..." />
+        </div>
       </div>
       <div className={styles.menu}>
         <p className={styles.section}>Дополнительные функции</p>
-        <button>Топ 15 цитат</button>
-        <button>Случайная цитата</button>
-        <button>Избранное</button>
+        <button>
+          <div className={styles.buttonContent}>
+            <img src={lineChart} alt="" />
+            Топ 15 цитат
+          </div>
+        </button>
+        <button>
+          <div className={styles.buttonContent}>
+            <img src={iconCitation} alt="" />
+            Случайная цитата
+          </div>
+        </button>
+        <button>
+          <div className={styles.buttonContent}>
+            <img src={iconSaved} alt="" />
+            Избранное
+          </div>
+        </button>
 
         <p className={styles.section}>История чатов</p>
         <button>Новый чат</button>

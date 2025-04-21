@@ -61,6 +61,8 @@
     background-color: #2e2e35;
     z-index: 1000;
     transform: translateX(-100%);
+    padding: 0 20px;
+
   }
 
   .sidebarWrapper.sidebarOpen {
