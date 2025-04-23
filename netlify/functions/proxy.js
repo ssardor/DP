@@ -1,22 +1,28 @@
 const fetch = require("node-fetch");
 
+// netlify/functions/proxy.js
 exports.handler = async function (event, context) {
-  console.log("AI_API_KEY in proxy.js:", process.env.AI_API_KEY);
+  console.log("Function invoked with event:", event);
+  // Добавляем CORS заголовки
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
 
+  // Обработка preflight запросов
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
+      headers,
+      body: "",
     };
   }
 
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers,
       body: JSON.stringify({ error: "Method not allowed" }),
     };
   }
@@ -34,16 +40,27 @@ exports.handler = async function (event, context) {
       }
     );
 
+    // Добавьте проверку статуса
+    if (!response.ok) {
+      throw new Error(`API responded with status ${response.status}`);
+    }
+
     const data = await response.json();
+
     return {
       statusCode: response.status,
+      headers,
       body: JSON.stringify(data),
     };
   } catch (error) {
     console.error("Proxy error:", error);
     return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
+      statusCode: error.response?.status || 500,
+      headers,
+      body: JSON.stringify({
+        error: error.message,
+        details: error.response?.data,
+      }),
     };
   }
 };

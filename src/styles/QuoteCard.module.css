@@ -1,35 +1,156 @@
 .cardContainer {
-  width: 600px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  height: 200px;
+  margin: 50px auto;
   position: relative;
+  perspective: 1000px;
+}
+
+.cardStack {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  margin-bottom: 60px;
+  transform-style: preserve-3d;
 }
 
 .card {
+  position: absolute;
+  width: 100%;
+  height: 200px;
   background-color: #1a1a1a;
   border-radius: 18px;
-  padding: 32px;
-  width: 100%;
-  min-height: 200px;
+  padding: 0;
   color: white;
   font-size: 20px;
-  font-style: italic;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+  text-align: center;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backface-visibility: hidden;
+  transform: translateX(0) rotate(0);
   transition: transform 0.3s ease;
-  margin-bottom: 50px; /* Отступ для кнопок снизу */
+  touch-action: pan-y;
 }
 
-.card:hover {
-  transform: scale(1.01);
+/* Стили для основной карточки */
+.card:nth-child(1) {
+  z-index: 5;
+  transform: translateY(0) translateZ(0);
+  opacity: 1;
+}
+
+/* Стили для карточек в стеке */
+.stackedCard:nth-child(2) {
+  z-index: 1; /* Было 4, стало 3 */
+  transform: translateY(-8px) translateZ(-20px);
+  opacity: 0.9;
+  background-color: #1f1f1f;
+}
+
+.stackedCard:nth-child(3) {
+  z-index: 1000; /* Было 3, стало 2 */
+  transform: translateY(-16px) translateZ(-40px);
+  opacity: 0.8;
+  background-color: #242424;
+}
+
+.stackedCard:nth-child(4) {
+  z-index: 1000; /* Было 2, стало 1 */
+  transform: translateY(-24px) translateZ(-60px);
+  opacity: 0.7;
+  background-color: #292929;
+}
+
+.stackedCard:nth-child(5) {
+  z-index: 0; /* Было 1, стало 0 */
+  transform: translateY(-32px) translateZ(-80px);
+  opacity: 0.6;
+  background-color: #2e2e2e;
+}
+
+/* Анимации для свайпа */
+.card.swiping {
+  transition: none;
+  cursor: grabbing;
+}
+
+.card.swiped {
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.card.swipedLeft {
+  transform: translateX(-200%) rotate(-30deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.card.swipedRight {
+  transform: translateX(200%) rotate(30deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Обновленные стили для свайпа */
+.swipedLeft {
+  transform: translateX(-200%) rotate(-30deg) !important;
+  opacity: 0 !important;
+  transition: transform 0.5s ease, opacity 0.5s ease !important;
+}
+
+.swipedRight {
+  transform: translateX(200%) rotate(30deg) !important;
+  opacity: 0 !important;
+  transition: transform 0.5s ease, opacity 0.5s ease !important;
+}
+
+/* Убираем любые стили, которые могут возвращать карточку */
+.card.swiping,
+.card.swipedLeft,
+.card.swipedRight {
+  transition: all 0.3s ease;
+}
+
+/* Анимация для новой карточки */
+@keyframes slideIn {
+  from {
+    transform: translateY(-40px) translateZ(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateZ(0);
+    opacity: 1;
+  }
+}
+
+.card.new {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Отключаем взаимодействие с карточками в стеке */
+.stackedCard {
+  pointer-events: none;
 }
 
 .text {
-  line-height: 1.6;
+  max-width: 100%;
+  max-height: 80%;
+  overflow-y: auto;
   margin: 0;
+  padding: 15px;
+  font-style: italic;
+  line-height: 1.6;
   text-align: center;
+  pointer-events: none;
 }
 
 /* Стили для состояния загрузки */
@@ -50,20 +171,23 @@
   }
 }
 
-.cardControls {
+.controlsWrapper {
   width: 100%;
-  display: flex;
-  flex-direction: column; /* Располагаем элементы вертикально */
-  align-items: center;
-  margin-top: -30px;
-  position: relative; /* Для абсолютного позиционирования кнопок */
+  position: relative;
+  margin-top: -20px;
 }
 
-/* Стрелки навигации по центру */
+.allControls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 .navigation {
   display: flex;
+  align-items: center;
   gap: 20px;
-  margin-left: 10px;
 }
 
 .navigation button {
@@ -73,35 +197,26 @@
   font-size: 24px;
   cursor: pointer;
   transition: color 0.3s ease;
+  padding: 10px;
 }
 
-.navigation button:hover {
+.navigation button:hover:not(:disabled) {
   color: #666;
 }
 
-/* Кнопки в правом углу */
-.rightButtons {
-  display: flex;
-  gap: 10px;
-  position: absolute;
-  right: 0;
-  top: 0;
+.navigation button:disabled {
+  color: #444;
+  cursor: not-allowed;
 }
 
-.actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  width: 100%;
+.counter {
+  color: #666;
+  font-size: 14px;
 }
 
-/* Кнопки слева */
-.leftButtons {
+.actionButtons {
   display: flex;
-  gap: 10px; /* Отступ между кнопками */
-  position: absolute;
-  left: 0;
+  gap: 20px;
 }
 
 .actionButton {
@@ -114,11 +229,11 @@
 }
 
 .actionButton:hover {
-  background-color: #333; /* Цвет фона при наведении */
+  background-color: #333;
 }
 
 .actionButton img {
-  width: 24px; /* Размер иконки */
+  width: 24px;
   height: 24px;
 }
 
@@ -167,31 +282,43 @@
 @media (max-width: 768px) {
   .cardContainer {
     width: 90%;
-    padding: 0 10px;
   }
-
+  .text {
+    font-size: 12px;
+  }
+  .cardStack {
+    margin-bottom: 0;
+  }
+  .allControls {
+    gap: 0;
+  }
   .card {
-    min-height: 120px;
-    padding: 10px;
+    padding: 0;
     font-size: 16px;
-  }
-
-  .navigation button {
-    font-size: 20px; /* Уменьшаем размер кнопок навигации */
-  }
-  .actionButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px 10px 7px 10px;
+    height: 150px;
   }
 
   .actionButton img {
-    width: 14px; /* Размер иконки */
-    height: 14px;
+    width: 20px;
+    height: 20px;
   }
-  .rightButtons {
-    display: flex;
-    gap: 0;
+
+  .navigation button {
+    font-size: 20px;
   }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.card.new {
+  animation: slideUp 0.3s ease-out;
 }

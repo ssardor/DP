@@ -5,14 +5,16 @@
   color: white;
   font-family: sans-serif;
   position: relative;
+  overflow: hidden; /* Предотвращаем горизонтальный скролл */
 }
 
 .sidebarWrapper {
   width: 330px;
   min-height: 90%; /* Высота на 100% экрана */
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   overflow: hidden; /* Скрываем содержимое, выходящее за пределы */
   padding: 20px 20px;
+  flex-shrink: 0; /* Предотвращаем сжатие сайдбара */
 }
 
 .sidebarWrapper.sidebarOpen {
@@ -27,9 +29,13 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding:  10px 0;
+  padding: 10px 0;
   overflow-y: auto;
   position: relative;
+  transition: all 0.3s ease; /* Добавляем плавный переход */
+  margin: 0 auto;
+  width: calc(100% - 330px); /* Когда sidebar открыт */
+  max-width: 1400px; /* Максимальная ширина */
 }
 
 .toggleSidebarBtn {
@@ -50,6 +56,15 @@
   background-color: #555;
 }
 
+/* Стили для закрытого сайдбара */
+.sidebarWrapper.closed {
+  width: 0;
+}
+
+.mainContent.expanded {
+  width: 100%; /* Когда sidebar закрыт */
+}
+
 /* Адаптивная верстка для телефонов */
 @media (max-width: 768px) {
   .sidebarWrapper {
@@ -62,7 +77,6 @@
     z-index: 1000;
     transform: translateX(-100%);
     padding: 0 20px;
-
   }
 
   .sidebarWrapper.sidebarOpen {

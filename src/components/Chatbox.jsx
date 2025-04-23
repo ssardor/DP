@@ -4,8 +4,8 @@ import QuoteCard from "./QuoteCard";
 import { fetchQuoteFromOpenAI } from "../utils/openai";
 import iconSend from "../img/Icon.svg";
 import iconLoading from "../img/IconProccess.png";
- // Импортируем иконку "Поделиться"
-const ChatBox = () => {
+// Импортируем иконку "Поделиться"
+const ChatBox = ({ isSidebarOpen }) => {
   const [history, setHistory] = useState([]); // История запросов и карточек
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,10 @@ const ChatBox = () => {
   const tagsRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
   };
 
   const isScrolledToBottom = () => {
@@ -35,8 +38,16 @@ const ChatBox = () => {
     // Добавляем запрос в историю с состоянием "Loading"
     setHistory((prev) => [
       ...prev,
-      { query: input, quotes: ["Loading..."], loading: true, currentIndex: 0 },
+      {
+        query: input,
+        quotes: ["Loading..."],
+        loading: true,
+        currentIndex: 0,
+      },
     ]);
+
+    // Скроллим к новому сообщению
+    scrollToBottom();
 
     try {
       const result = await fetchQuoteFromOpenAI(input);
@@ -77,24 +88,27 @@ const ChatBox = () => {
     }
   };
 
-  // Прокручиваем вниз только если пользователь находится внизу
+  // Скролл при добавлении нового сообщения
   useEffect(() => {
-    if (isScrolledToBottom()) {
+    if (history.length > 0) {
       scrollToBottom();
     }
-  }, [history]);
+  }, [history.length]);
 
   const handleNavigation = (index, direction) => {
     setHistory((prev) => {
       const updatedHistory = [...prev];
       const currentItem = updatedHistory[index];
-      const newIndex =
-        direction === "next"
-          ? (currentItem.currentIndex + 1) % currentItem.quotes.length
-          : (currentItem.currentIndex - 1 + currentItem.quotes.length) %
-            currentItem.quotes.length;
 
-      updatedHistory[index] = { ...currentItem, currentIndex: newIndex };
+      if (
+        direction === "next" &&
+        currentItem.currentIndex < currentItem.quotes.length - 1
+      ) {
+        currentItem.currentIndex++;
+      } else if (direction === "prev" && currentItem.currentIndex > 0) {
+        currentItem.currentIndex--;
+      }
+
       return updatedHistory;
     });
   };
@@ -109,64 +123,49 @@ const ChatBox = () => {
 
   const handleTouchEnd = () => {
     if (!tagsRef.current) return;
-    
+
     const difference = touchStart - touchEnd;
     const scrollAmount = 150; // Adjust this value based on your needs
 
-    if (Math.abs(difference) > 50) { // Minimum swipe distance
+    if (Math.abs(difference) > 50) {
+      // Minimum swipe distance
       if (difference > 0) {
         // Swipe left
-        tagsRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        tagsRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
       } else {
         // Swipe right
-        tagsRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        tagsRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
       }
     }
   };
 
   return (
-    <div className={styles.chatBox}>
+    <div
+      className={`${styles.chatBox} ${!isSidebarOpen ? styles.expanded : ""}`}
+    >
       <div className={styles.messages} ref={messagesContainerRef}>
         {history.map((entry, index) => (
           <div
             key={index}
             className={styles.historyItem}
-            ref={index === 0 ? firstMessageRef : null} // Реф для первого элемента
+            ref={index === 0 ? firstMessageRef : null}
           >
             <div className={styles.queryContainer}>
               <div className={styles.query}>{entry.query}</div>
             </div>
-            {/* Карточка */}
             <QuoteCard
-              text={entry.quotes[entry.currentIndex]}
+              quotes={entry.quotes}
               loading={entry.loading}
               onNext={() => handleNavigation(index, "next")}
               onPrev={() => handleNavigation(index, "prev")}
+              currentIndex={entry.currentIndex}
             />
-            {/* Кнопки и стрелки под карточкой */}
-            {!entry.loading && (
-              <div className={styles.cardActionsWrapper}>
-                {/* Кнопки слева */}
-                <div className={styles.leftButtons}>
-                 
-                </div>
-                {/* Стрелки по центру */}
-                <div className={styles.navigation}>
-                  <button onClick={() => handleNavigation(index, "prev")}>
-                    &larr;
-                  </button>
-                  <button onClick={() => handleNavigation(index, "next")}>
-                    &rarr;
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
-
       <div className={styles.inputSection}>
-        <div 
+        <div
           className={styles.tags}
           ref={tagsRef}
           onTouchStart={handleTouchStart}

@@ -22,11 +22,12 @@
   max-height: calc(100vh - 200px); /* Ограничиваем высоту контейнера */
   min-height: 550px; /* Минимальная высота, чтобы не выглядело сломанным */
   overflow-y: auto; /* Добавляем вертикальный скролл */
-  padding: 10px;
+  padding: 10px 240px 10px 10px; /* Отступы внутри контейнера */
   padding-left: 0;
   scrollbar-width: thin; /* Для Firefox */
   flex-grow: 1; /* Заставляем контейнер занимать оставшееся пространство */
   overflow-x: hidden; /* Скрываем горизонтальный скролл */
+  scroll-behavior: smooth;
 }
 
 .messages::-webkit-scrollbar {
@@ -58,6 +59,7 @@
   justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
+  width: 80%;
 }
 
 .tags button {
@@ -76,6 +78,7 @@
 .inputArea {
   display: flex;
   align-items: center;
+  width: 80%;
 }
 
 .inputArea input {
@@ -137,6 +140,8 @@
 
 .historyItem {
   margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
 }
 
 .query {
@@ -155,7 +160,7 @@
   background-color: #333; /* Тёмный фон для запроса */
   color: white; /* Белый текст */
   padding: 15px 30px; /* Внутренние отступы */
-  margin: 30px 25px; /* Отступы по бокам */
+  margin: 50px 45px  50px 0; /* Отступы по бокам */
   border-radius: 12px; /* Скруглённые углы */
   font-size: 18px; /* Размер текста */
   max-width: 70%; /* Ограничиваем ширину */
@@ -350,13 +355,15 @@
   .messages {
     max-height: calc(100vh - 150px);
     min-height: 400px;
+    padding: 10px 0; /* Убираем боковые отступы */
   }
   .query {
     font-size: 14px; /* Уменьшаем размер текста для мобильных устройств */
     padding: 10px 20px; /* Уменьшаем внутренние отступы */
     max-width: 90%;
     margin-right: 0;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 30px;
     /* Увеличиваем ширину карточки на мобильных устройствах */
   }
 
@@ -385,6 +392,7 @@
   .tags {
     flex-wrap: nowrap;
     justify-content: flex-start;
+    width: 100%;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -411,8 +419,8 @@
     margin-right: 0;
   }
   .inputArea {
-   padding: 0 10px;
-  
+    padding: 0 10px;
+    width: 95%;
   }
   /* Optional: Add fade effect on edges */
   .inputSection {
@@ -438,5 +446,16 @@
   .inputSection::after {
     right: 0;
     background: linear-gradient(to left, #18181a, transparent);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
