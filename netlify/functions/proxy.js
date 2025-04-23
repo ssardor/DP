@@ -19,6 +19,14 @@ exports.handler = async function (event, context) {
     };
   }
 
+  if (event.httpMethod === "GET") {
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ status: "Proxy is working!" }),
+    };
+  }
+
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
