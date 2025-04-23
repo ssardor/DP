@@ -23,13 +23,7 @@ const ChatBox = ({ isSidebarOpen }) => {
     });
   };
 
-  const isScrolledToBottom = () => {
-    const container = messagesContainerRef.current;
-    if (!container) return false;
-    return (
-      container.scrollHeight - container.scrollTop === container.clientHeight
-    );
-  };
+ 
 
   const handleSend = async () => {
     if (!input) return;
