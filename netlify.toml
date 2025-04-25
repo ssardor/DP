@@ -7,11 +7,11 @@
   to = "/index.html"
   status = 200
 
+[functions]
+  directory = "netlify/functions"
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/proxy/:splat"
   status = 200
   force = true
-
-[functions]
-  directory = "netlify/functions"
