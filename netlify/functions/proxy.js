@@ -53,7 +53,11 @@ exports.handler = async function (event, context) {
       throw new Error(`API responded with status ${response.status}`);
     }
 
-    const data = await response.json();
+    console.log("External API status:", response.status);
+    const text = await response.text();
+    console.log("External API response:", text);
+
+    const data = JSON.parse(text);
 
     return {
       statusCode: response.status,
@@ -63,14 +67,9 @@ exports.handler = async function (event, context) {
   } catch (error) {
     console.error("Proxy error:", error);
     return {
-      statusCode: error.response?.status || 500,
+      statusCode: 502,
       headers,
-      body: JSON.stringify({
-        error: error.message,
-        details: error.response?.data,
-      }),
+      body: JSON.stringify({ error: "Proxy error", details: error.message }),
     };
   }
 };
-
-
