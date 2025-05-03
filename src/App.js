@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import ChatBox from "./components/Chatbox";
 import Profile from "./components/Profile";
+import RandomQuote from "./components/RandomQuote";
 import styles from "./styles/App.module.css";
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
         {/* Кнопка для открытия боковой панели */}
         {!isSidebarVisible && (
           <button className={styles.toggleSidebarBtn} onClick={toggleSidebar}>
-            Открыть меню
+            Открыть
           </button>
         )}
 
@@ -36,6 +37,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ChatBox />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/random-quote" element={<RandomQuote />} />
           </Routes>
         </div>
       </div>

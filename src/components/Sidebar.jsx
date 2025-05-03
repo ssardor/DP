@@ -33,12 +33,14 @@ const Sidebar = ({ onClose }) => {
             Топ 15 цитат
           </div>
         </button>
-        <button>
-          <div className={styles.buttonContent}>
-            <img src={iconCitation} alt="" />
-            Случайная цитата
-          </div>
-        </button>
+        <Link to="/random-quote">
+          <button>
+            <div className={styles.buttonContent}>
+              <img src={iconCitation} alt="" />
+              Случайная цитата
+            </div>
+          </button>
+        </Link>
         <button>
           <div className={styles.buttonContent}>
             <img src={iconSaved} alt="" />

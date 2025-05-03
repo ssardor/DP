@@ -1,108 +1,68 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "../styles/Profile.module.css";
 
 const Profile = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState({
-    name: "Nikolayev Nikolay",
-    email: "nikola@gmail.com",
-    likedQuotes: 42,
-    daysUsing: 120,
-    plan: "Premium",
-  });
-
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = () => {
-    setIsEditing(false);
-    // Здесь можно добавить логику сохранения данных на сервере
-    console.log("Сохранено:", userData);
-  };
-
   return (
-    <div className={styles.profile}>
-      <div className={styles.header}>
-        <h2>Личный аккаунт</h2>
-        <button className={styles.logoutBtn}>Выйти</button>
+    <div className={styles.profilePage}>
+      {/* Top Navigation Bar */}
+      <div className={styles.topBar}>
+       
+        <div className={styles.center}>Профиль</div>
+        
       </div>
 
-      <div className={styles.avatarSection}>
-        <img
-          src="https://i.imgur.com/rrggjXc_d.webp?maxwidth=520&shape=thumb&fidelity=high"
-          alt="User Avatar"
-          className={styles.avatar}
-        />
-        <button className={styles.editAvatarBtn}>Изменить фото</button>
+      {/* User Profile Section */}
+      <div className={styles.avatarBlock}>
+        <div className={styles.avatarCircle}>G</div>
+        <div className={styles.username}>Guest User</div>
+        <div className={styles.email}>guest@example.com</div>
+        <button className={styles.editProfileBtn}>
+          ✏️ Редактировать профиль
+        </button>
       </div>
 
-      <div className={styles.infoSection}>
-        <div className={styles.infoItem}>
-          <label>Имя:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="name"
-              value={userData.name}
-              onChange={handleInputChange}
-            />
-          ) : (
-            <span>{userData.name}</span>
-          )}
-        </div>
-
-        <div className={styles.infoItem}>
-          <label>Email:</label>
-          {isEditing ? (
-            <input
-              type="email"
-              name="email"
-              value={userData.email}
-              onChange={handleInputChange}
-            />
-          ) : (
-            <span>{userData.email}</span>
-          )}
-        </div>
-
-        <div className={styles.infoItem}>
-          <label>Лайкнутые цитаты:</label>
-          <span>{userData.likedQuotes}</span>
-        </div>
-
-        <div className={styles.infoItem}>
-          <label>Дней с нами:</label>
-          <span>{userData.daysUsing}</span>
-        </div>
-
-        <div className={styles.infoItem}>
-          <label>Текущий план:</label>
-          <span>{userData.plan}</span>
+      {/* Stats Section */}
+      <div className={styles.statsCard}>
+        <div className={styles.statsRow}>
+          <div className={styles.statCol}>
+            <div className={styles.statIcon}>💬</div>
+            <div className={styles.statNum}>0</div>
+            <div className={styles.statLabel}>     shared quotes </div>
+          </div>
+          <div className={styles.statCol}>
+            <div className={styles.statIcon}>❤️</div>
+            <div className={styles.statNum}>0</div>
+            <div className={styles.statLabel}>Избранное</div>
+          </div>
+          <div className={styles.statCol}>
+            <div className={styles.statIcon}>⏰</div>
+            <div className={styles.statNum}>0</div>
+            <div className={styles.statLabel}>Дней</div>
+          </div>
         </div>
       </div>
 
-      <div className={styles.actions}>
-        {isEditing ? (
-          <button className={styles.saveBtn} onClick={handleSave}>
-            Сохранить
-          </button>
-        ) : (
-          <button className={styles.editBtn} onClick={handleEditToggle}>
-            Редактировать
-          </button>
-        )}
+      {/* Premium Section */}
+      <div className={styles.premiumCard}>
+        <div className={styles.premiumTitle}>Премиум-аккаунт</div>
+        <div className={styles.premiumSubtitle}>
+          Безлимитные цитаты, без рекламы и больше функций
+        </div>
+        <button className={styles.premiumBtn}>Перейти на Премиум</button>
       </div>
 
-      <div className={styles.navigation}>
-        <button>Избранное</button>
-        <button>Месячные планы</button>
-        <button>Настройки</button>
+      {/* Daily Quote Limit Section */}
+      <div className={styles.limitCard}>
+        <div className={styles.limitTitle}>Лимит цитат в день</div>
+        <div className={styles.limitBarBg}>
+          <div className={styles.limitBar} style={{ width: "100%" }}></div>
+        </div>
+        <div className={styles.limitText}>10 из 10 цитат осталось сегодня</div>
+      </div>
+
+      {/* Log Out Button */}
+      <div className={styles.logoutSection}>
+        <button className={styles.logoutBtn2}>Выйти</button>
       </div>
     </div>
   );
