@@ -5,9 +5,11 @@ import ChatBox from "./components/Chatbox";
 import Profile from "./components/Profile";
 import RandomQuote from "./components/RandomQuote";
 import styles from "./styles/App.module.css";
-
+import TopQuotes15 from "./components/TopQuotes15";
+import PremiumScreen from "./components/PremiumScreen";
+import Settings from "./components/Settings";
 function App() {
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true); // Было false, теперь true
 
   const toggleSidebar = () => {
     setIsSidebarVisible((prev) => !prev);
@@ -38,6 +40,10 @@ function App() {
             <Route path="/" element={<ChatBox />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/random-quote" element={<RandomQuote />} />
+            <Route path="/top-quotes" element={<TopQuotes15 />} />
+            <Route path="/settings" element={<Settings/>} />
+            <Route path="/plans" element={<PremiumScreen/>} />
+            <Route path="*" element={<ChatBox />} />
           </Routes>
         </div>
       </div>

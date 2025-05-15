@@ -156,8 +156,8 @@
   color: #fff;
   border: none;
   border-radius: 24px;
-  padding: 10px 0;
-  width: 100%;
+  padding: 20px ;
+  width: 90%;
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
@@ -222,4 +222,10 @@
 }
 .logoutBtn2:hover {
   background: #7e1111;
+}
+@media (max-width: 700px) {
+  .premiumBtn {
+    padding: 16px 0;
+    width: 100%;
+  }
 }

@@ -1,0 +1,249 @@
+:root {
+  --main-bg: #18181a;
+  --card-bg: #222222;
+  --card-bg-dark: #23232b;
+  --accent: #e74c3c;
+  --accent-hover: #c0392b;
+  --text-main: #f0f0f0;
+  --text-secondary: #e6e4e4;
+  --divider: #ececec;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --main-bg: #181820;
+  --card-bg: #23232b;
+  --text-main: #f7f6f9;
+  --text-secondary: #aaa;
+  --divider: #333;
+}
+
+.topQuotesWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 12px 100px 12px;
+  background: var(--main-bg);
+  min-height: 100vh;
+  transition: background 0.3s;
+  font-family: sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+  justify-content: flex-start;
+}
+
+.title {
+  font-size: 2.3rem;
+  margin: 0;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.quotesList {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.quoteCard {
+  background: var(--card-bg);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  padding: 38px 32px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: "Georgia", serif;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 700px;
+  transition: box-shadow 0.2s, background 0.3s;
+  position: relative;
+}
+
+.quoteText {
+  font-size: 1.45rem;
+  margin-bottom: 16px;
+  color: var(--text-main);
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.quoteAuthor {
+  font-size: 1.08rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.divider {
+  width: 100%;
+  border-bottom: 1.5px solid var(--divider);
+  margin: 10px 0 18px 0;
+}
+
+.metrics {
+  display: flex;
+  gap: 38px;
+  font-size: 1.13rem;
+  margin-bottom: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heart {
+  cursor: pointer;
+  font-size: 1.3em;
+  transition: transform 0.18s, color 0.18s;
+  user-select: none;
+}
+.liked {
+  color: var(--accent);
+  transform: scale(1.22);
+  filter: drop-shadow(0 2px 6px #e74c3c33);
+}
+
+.actions {
+  display: flex;
+  gap: 22px;
+  margin-top: 10px;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  font-size: 1.13rem;
+  cursor: pointer;
+  color: var(--text-main);
+  padding: 4px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.18s, transform 0.15s;
+  outline: none;
+}
+.actionBtn:active {
+  transform: scale(0.96);
+}
+.actionBtn:hover {
+  background: var(--divider);
+  color: var(--accent);
+}
+
+.cta {
+  margin: 56px 0 0 0;
+  text-align: center;
+  font-size: 1.18rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.toTopBtn {
+  position: fixed;
+  right: 32px;
+  bottom: 40px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--divider);
+  border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  font-size: 1.7rem;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: background 0.2s, color 0.2s;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.toTopBtn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.toTopBtn.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popover {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #23232b;
+  color: #fff;
+  padding: 7px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+  z-index: 10;
+  opacity: 0.95;
+  animation: fadeIn 0.3s;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 0.95;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .topQuotesWrapper {
+    padding: 54px 15px 80px 15px;
+
+  }
+  .quoteAuthor{
+    margin-left: 20px;
+  }
+  .quoteText {
+    font-size: 1.3rem;
+    padding: 10px 20px;
+    line-height: 1.3;
+  }
+  .quoteCard {
+    padding: 28px 10px 18px 5px;
+    width: 100%;
+  }
+  .title {
+    font-size: 2.25rem;
+  }
+  .toTopBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    right: 12px;
+    bottom: 18px;
+  }
+  .quotesList {
+    gap: 18px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--main-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--divider);
+  border-radius: 8px;
+}

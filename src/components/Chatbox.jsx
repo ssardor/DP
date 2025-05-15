@@ -5,13 +5,16 @@ import { fetchQuoteFromOpenAI } from "../utils/openai";
 import iconSend from "../img/Icon.svg";
 import iconLoading from "../img/IconProccess.png";
 // Импортируем иконку "Поделиться"
+
 const ChatBox = ({ isSidebarOpen }) => {
-  const [history, setHistory] = useState([]); // История запросов и карточек
+  const [history, setHistory] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null); // Реф для последнего элемента
-  const messagesContainerRef = useRef(null); // Реф для контейнера сообщений
-  const firstMessageRef = useRef(null); // Реф для первого элемента
+  const [abortController, setAbortController] = useState(null);
+  const [stopped, setStopped] = useState(false); // Новое состояние
+  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const firstMessageRef = useRef(null);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const tagsRef = useRef(null);
@@ -23,13 +26,15 @@ const ChatBox = ({ isSidebarOpen }) => {
     });
   };
 
- 
-
   const handleSend = async () => {
     if (!input) return;
     setLoading(true);
+    setStopped(false);
 
-    // Добавляем запрос в историю с состоянием "Loading"
+    // Создаем новый AbortController для этого запроса
+    const controller = new AbortController();
+    setAbortController(controller);
+
     setHistory((prev) => [
       ...prev,
       {
@@ -40,18 +45,29 @@ const ChatBox = ({ isSidebarOpen }) => {
       },
     ]);
 
-    // Скроллим к новому сообщению
     scrollToBottom();
 
     try {
-      const result = await fetchQuoteFromOpenAI(input);
+      const result = await fetchQuoteFromOpenAI(input, controller.signal);
+      if (result === "__aborted__") {
+        // Если был вызван abort
+        setHistory((prev) => {
+          const updatedHistory = [...prev];
+          updatedHistory[updatedHistory.length - 1] = {
+            query: input,
+            quotes: ["Процесс остановлен"],
+            loading: false,
+            currentIndex: 0,
+          };
+          return updatedHistory;
+        });
+        setStopped(true);
+        return;
+      }
       if (result.startsWith("Ошибка:")) {
         throw new Error(result);
       }
-
       const quotesArray = result.split("\n").filter((quote) => quote.trim());
-
-      // Обновляем последний элемент истории с результатом
       setHistory((prev) => {
         const updatedHistory = [...prev];
         updatedHistory[updatedHistory.length - 1] = {
@@ -63,26 +79,46 @@ const ChatBox = ({ isSidebarOpen }) => {
         return updatedHistory;
       });
     } catch (error) {
-      console.error("Ошибка:", error);
-
-      // Обновляем последний элемент истории с ошибкой
-      setHistory((prev) => {
-        const updatedHistory = [...prev];
-        updatedHistory[updatedHistory.length - 1] = {
-          query: input,
-          quotes: ["Ошибка при загрузке цитат."],
-          loading: false,
-          currentIndex: 0,
-        };
-        return updatedHistory;
-      });
+      if (error.name === "AbortError") {
+        setHistory((prev) => {
+          const updatedHistory = [...prev];
+          updatedHistory[updatedHistory.length - 1] = {
+            query: input,
+            quotes: ["Процесс остановлен"],
+            loading: false,
+            currentIndex: 0,
+          };
+          return updatedHistory;
+        });
+        setStopped(true);
+      } else {
+        setHistory((prev) => {
+          const updatedHistory = [...prev];
+          updatedHistory[updatedHistory.length - 1] = {
+            query: input,
+            quotes: ["Ошибка при загрузке цитат."],
+            loading: false,
+            currentIndex: 0,
+          };
+          return updatedHistory;
+        });
+      }
     } finally {
       setLoading(false);
-      setInput(""); // Очищаем поле ввода
+      setInput("");
+      setAbortController(null);
     }
   };
 
-  // Скролл при добавлении нового сообщения
+  // Кнопка остановки процесса
+  const handleStop = () => {
+    if (abortController) {
+      abortController.abort();
+      setStopped(true);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (history.length > 0) {
       scrollToBottom();
@@ -93,18 +129,24 @@ const ChatBox = ({ isSidebarOpen }) => {
     setHistory((prev) => {
       const updatedHistory = [...prev];
       const currentItem = updatedHistory[index];
-
       if (
         direction === "next" &&
         currentItem.currentIndex < currentItem.quotes.length - 1
       ) {
         currentItem.currentIndex++;
-      } else if (direction === "prev" && currentItem.currentIndex > 0) {
-        currentItem.currentIndex--;
       }
-
       return updatedHistory;
     });
+  };
+
+  const handlePrev = (entryIndex) => {
+    setHistory((prev) =>
+      prev.map((entry, idx) =>
+        idx === entryIndex
+          ? { ...entry, currentIndex: Math.max(0, entry.currentIndex - 1) }
+          : entry
+      )
+    );
   };
 
   const handleTouchStart = (e) => {
@@ -117,17 +159,12 @@ const ChatBox = ({ isSidebarOpen }) => {
 
   const handleTouchEnd = () => {
     if (!tagsRef.current) return;
-
     const difference = touchStart - touchEnd;
-    const scrollAmount = 150; // Adjust this value based on your needs
-
+    const scrollAmount = 150;
     if (Math.abs(difference) > 50) {
-      // Minimum swipe distance
       if (difference > 0) {
-        // Swipe left
         tagsRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
       } else {
-        // Swipe right
         tagsRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
       }
     }
@@ -147,13 +184,26 @@ const ChatBox = ({ isSidebarOpen }) => {
             <div className={styles.queryContainer}>
               <div className={styles.query}>{entry.query}</div>
             </div>
-            <QuoteCard
-              quotes={entry.quotes}
-              loading={entry.loading}
-              onNext={() => handleNavigation(index, "next")}
-              onPrev={() => handleNavigation(index, "prev")}
-              currentIndex={entry.currentIndex}
-            />
+            {entry.quotes.length === 1 &&
+            entry.quotes[0] === "Процесс остановлен" ? (
+              <h4
+                style={{
+                  textAlign: "center",
+                  color: "#646464",
+                  margin: "24px 0",
+                }}
+              >
+                Процесс остановлен
+              </h4>
+            ) : (
+              <QuoteCard
+                quotes={entry.quotes}
+                loading={entry.loading}
+                onNext={() => handleNavigation(index, "next")}
+                onPrev={() => handlePrev(index)}
+                currentIndex={entry.currentIndex}
+              />
+            )}
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -181,11 +231,15 @@ const ChatBox = ({ isSidebarOpen }) => {
           />
           <button
             className={styles.sendBtn}
-            onClick={handleSend}
-            disabled={loading}
+            onClick={loading ? handleStop : handleSend}
+            disabled={loading && !abortController}
           >
             {loading ? (
-              <img src={iconLoading} alt="Загрузка" />
+              <img
+                src={iconLoading}
+                alt="Загрузка"
+                style={{ cursor: "pointer" }}
+              />
             ) : (
               <img src={iconSend} alt="Отправить" />
             )}

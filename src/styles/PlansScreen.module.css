@@ -1,0 +1,144 @@
+.plansWrapper {
+  margin: 48px auto 0 auto;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.plansTitle {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.plansList {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+}
+
+.planCard {
+  background: rgba(40, 40, 60, 0.7);
+  border-radius: 18px;
+  padding: 28px 22px 22px 22px;
+  box-shadow: 0 2px 12px #6a5af922;
+  position: relative;
+  border: none;
+  color: #fff;
+  text-align: center;
+}
+
+.highlight {
+  background: linear-gradient(90deg, #6a5af9 0%, #00c6fb 100%);
+  box-shadow: 0 4px 32px #6a5af966;
+  border: 2px solid #00c6fb;
+}
+
+.planBadge {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: #00c6fb;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 3px 10px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px #00c6fb44;
+}
+
+.planLabel {
+  font-size: 1.13rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.planPrice {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #bdbdfd;
+  margin-bottom: 2px;
+}
+
+.highlight .planPrice {
+  color: #fff;
+}
+
+.planPeriod {
+  font-size: 1rem;
+  color: #bdbdfd;
+  margin-bottom: 10px;
+}
+
+.highlight .planPeriod {
+  color: #fff;
+}
+
+.planDiscount {
+  color: #00ffb0;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.planFeatures {
+  padding: 0;
+  margin: 0 0 18px 0;
+  list-style: none;
+}
+
+.planFeature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #bdbdfd;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  justify-content: center;
+}
+
+.highlight .planFeature {
+  color: #fff;
+}
+
+.planCheck {
+  color: #00ffb0;
+  font-size: 1.1rem;
+}
+
+.planBtn {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 8px;
+  border: none;
+  background: #444;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s;
+  box-shadow: none;
+}
+
+.planBtnHighlight {
+  background: linear-gradient(90deg, #6a5af9 0%, #00c6fb 100%);
+  color: #fff;
+  box-shadow: 0 2px 12px #00c6fb44;
+}
+
+.plansNote {
+  margin: 38px 0 0 0;
+  color: #bdbdfd;
+  font-size: 0.85rem;
+  text-align: center;
+  opacity: 0.7;
+  max-width: 420px;
+}

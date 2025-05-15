@@ -17,6 +17,7 @@
 
 .card {
   position: absolute;
+  border: 2px solid #444;
   width: 100%;
   height: 200px;
   background-color: #222222;
@@ -28,115 +29,14 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  transition: transform 0.5s ease, opacity 0.5s ease;
   cursor: grab;
   user-select: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   backface-visibility: hidden;
-  transform: translateX(0) rotate(0);
-  transition: transform 0.3s ease;
-  touch-action: pan-y;
+  /* Не используем transform, scale, translateX/Y/Z, rotate здесь! */
+  /* Не используем transition для transform! */
 }
 
-/* Стили для основной карточки */
-.card:nth-child(1) {
-  z-index: 5;
-  transform: translateY(0) translateZ(0);
-  opacity: 1;
-}
-
-/* Стили для карточек в стеке */
-.stackedCard:nth-child(2) {
-  z-index: 1; /* Было 4, стало 3 */
-  transform: translateY(-8px) translateZ(-20px);
-  opacity: 0.9;
-  background-color: #1f1f1f;
-}
-
-.stackedCard:nth-child(3) {
-  z-index: 1000; /* Было 3, стало 2 */
-  transform: translateY(-16px) translateZ(-40px);
-  opacity: 0.8;
-  background-color: #242424;
-}
-
-.stackedCard:nth-child(4) {
-  z-index: 1000; /* Было 2, стало 1 */
-  transform: translateY(-24px) translateZ(-60px);
-  opacity: 0.7;
-  background-color: #292929;
-}
-
-.stackedCard:nth-child(5) {
-  z-index: 0; /* Было 1, стало 0 */
-  transform: translateY(-32px) translateZ(-80px);
-  opacity: 0.6;
-  background-color: #2e2e2e;
-}
-
-/* Анимации для свайпа */
-.card.swiping {
-  transition: none;
-  cursor: grabbing;
-}
-
-.card.swiped {
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.card.swipedLeft {
-  transform: translateX(-200%) rotate(-30deg);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.3s, opacity 0.3s;
-}
-
-.card.swipedRight {
-  transform: translateX(200%) rotate(30deg);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.3s, opacity 0.3s;
-}
-
-/* Обновленные стили для свайпа */
-.swipedLeft {
-  transform: translateX(-200%) rotate(-30deg) !important;
-  opacity: 0 !important;
-  transition: transform 0.5s ease, opacity 0.5s ease !important;
-}
-
-.swipedRight {
-  transform: translateX(200%) rotate(30deg) !important;
-  opacity: 0 !important;
-  transition: transform 0.5s ease, opacity 0.5s ease !important;
-}
-
-/* Убираем любые стили, которые могут возвращать карточку */
-.card.swiping,
-.card.swipedLeft,
-.card.swipedRight {
-  transition: all 0.3s ease;
-}
-
-/* Анимация для новой карточки */
-@keyframes slideIn {
-  from {
-    transform: translateY(-40px) translateZ(-100px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) translateZ(0);
-    opacity: 1;
-  }
-}
-
-.card.new {
-  animation: slideIn 0.5s ease-out;
-}
-
-/* Отключаем взаимодействие с карточками в стеке */
 .stackedCard {
   pointer-events: none;
 }
@@ -153,10 +53,25 @@
   pointer-events: none;
 }
 
-/* Стили для состояния загрузки */
 .loading {
   background-color: #1a1a1a;
   animation: pulse 1.5s infinite;
+}
+
+.loadingCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #444;
+  border-top: 5px solid #fff;
+  border-radius: 50%;
+  animation: spin 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  margin: auto;
 }
 
 @keyframes pulse {
@@ -169,6 +84,11 @@
   100% {
     opacity: 0.6;
   }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
 }
 
 .controlsWrapper {
@@ -278,7 +198,6 @@
   }
 }
 
-/* Адаптивная верстка для телефонов */
 @media (max-width: 768px) {
   .cardContainer {
     width: 90%;
@@ -306,19 +225,4 @@
   .navigation button {
     font-size: 20px;
   }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0.5;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.card.new {
-  animation: slideUp 0.3s ease-out;
 }

@@ -1,0 +1,134 @@
+.settingsWrapper {
+  max-width: 1100px;
+  min-width: 320px;
+  /* margin: 0 auto; */
+  padding: 36px 240px 48px 240px;
+  color: #fff;
+}
+
+.settingsTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.settingsGroup {
+  margin-bottom: 32px;
+}
+
+.settingsGroupTitle {
+  color: #6a5af9;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  margin-bottom: 12px;
+  margin-left: 2px;
+}
+
+.settingsRow {
+ display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(40,40,60,0.7);
+  border-radius: 12px;
+  padding: 24px 18px;
+  font-size: 1.08rem;
+  margin-bottom: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  transition: background 0.18s;
+}
+.settingsRowBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(40,40,60,0.7);
+  width: 100%;
+  border-radius: 12px;
+  padding: 24px 18px;
+  font-size: 1.08rem;
+  margin-bottom: 10px;
+  color: #fff;
+  border: none;
+  outline: none;
+  transition: background 0.18s;
+}
+
+.settingsRowBtn {
+  cursor: pointer;
+  background: rgba(40,40,60,0.7);
+  transition: background 0.18s;
+}
+.settingsRowBtn:hover {
+  background: #23232b;
+}
+
+.upgradeBtn {
+  width: 100%;
+  margin-top: 10px;
+  background: linear-gradient(90deg, #6a5af9 0%, #00c6fb 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  padding: 24px 0;
+  margin-bottom: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 12px #6a5af944;
+  transition: background 0.18s, transform 0.13s;
+}
+.upgradeBtn:hover {
+  background: linear-gradient(90deg, #00c6fb 0%, #6a5af9 100%);
+  transform: scale(1.03);
+}
+
+/* Switch styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #444;
+  border-radius: 24px;
+  transition: background 0.2s;
+}
+.switch input:checked + .slider {
+  background: linear-gradient(90deg, #6a5af9 0%, #00c6fb 100%);
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.switch input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+@media (max-width: 600px) {
+  .settingsWrapper {
+    padding: 24px 0 32px 0;
+  }
+  .settingsTitle {
+    font-size: 1.3rem;
+  }
+}

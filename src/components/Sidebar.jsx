@@ -27,12 +27,14 @@ const Sidebar = ({ onClose }) => {
       </div>
       <div className={styles.menu}>
         <p className={styles.section}>Дополнительные функции</p>
-        <button>
-          <div className={styles.buttonContent}>
-            <img src={lineChart} alt="" />
-            Топ 15 цитат
-          </div>
-        </button>
+        <Link to="/top-quotes">
+          <button>
+            <div className={styles.buttonContent}>
+              <img src={lineChart} alt="" />
+              Топ 15 цитат
+            </div>
+          </button>
+        </Link>
         <Link to="/random-quote">
           <button>
             <div className={styles.buttonContent}>
@@ -47,10 +49,25 @@ const Sidebar = ({ onClose }) => {
             Избранное
           </div>
         </button>
-
+        <Link to="/settings">
+          <button>
+            <div className={styles.buttonContent}>
+              {/* <img src={iconCitation} alt="" /> */}
+              Настройки
+            </div>
+          </button>
+        </Link>
+        <Link to="/plans">
+          <button>
+            <div className={styles.buttonContent}>
+              {/* <img src={iconCitation} alt="" /> */}
+              Планы
+            </div>
+          </button>
+        </Link>
         <p className={styles.section}>История чатов</p>
         <button>Новый чат</button>
-        <button>С плохим настроением</button>
+       
         <button className={styles.active}>Мало зарабатываю</button>
       </div>
       <Link to="/profile">
