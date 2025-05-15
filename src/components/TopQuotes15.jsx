@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/TopQuotes.module.css";
 import iconCopy from "../img/IconCopy.svg";
-import iconSaved from "../img/heart.svg";
 import iconShare from "../img/IconShare.svg";
 const initialQuotes = [
   {

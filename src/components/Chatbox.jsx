@@ -11,7 +11,7 @@ const ChatBox = ({ isSidebarOpen }) => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [abortController, setAbortController] = useState(null);
-  const [stopped, setStopped] = useState(false); // Новое состояние
+  const [ setStopped] = useState(false); // Новое состояние
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const firstMessageRef = useRef(null);
