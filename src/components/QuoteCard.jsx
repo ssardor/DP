@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "../styles/QuoteCard.module.css";
 import iconCopy from "../img/IconCopy.svg";
-import iconSaved from "../img/heart.svg";
+import iconSaved from "../img/heart.svg"; // Пустое сердце
+import iconLiked from "../img/heartLiked.png"; // Заполненное сердце
 import iconShare from "../img/IconShare.svg";
+import { supabase } from "../supabaseClient";
 
 const swipeConfidenceThreshold = 120;
 
@@ -11,14 +14,14 @@ function cleanQuote(text) {
   return text.replace(/^\d+\.\s*/, "");
 }
 
-const QuoteCard = ({
-  quotes = [],
-  currentIndex = 0,
-  loading = false,
-  onNext,
-  onPrev,
-}) => {
+const QuoteCard = ({ quotes, loading, currentIndex = 0, onNext, onPrev }) => {
   const [showCopyPopover, setShowCopyPopover] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLiked(false);
+  }, [currentIndex, quotes]);
 
   const handleCopy = async () => {
     try {
@@ -27,6 +30,92 @@ const QuoteCard = ({
       setTimeout(() => setShowCopyPopover(false), 2000);
     } catch (err) {
       console.error("Ошибка при копировании:", err);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        navigate("/login");
+        return;
+      }
+
+      if (!isLiked) {
+        // Добавление в избранное
+        const { error } = await supabase.from("favorites").insert({
+          user_id: user.id,
+          query: "Избранная цитата",
+          response: quotes[currentIndex],
+          created_at: new Date().toISOString(),
+        });
+
+        if (error) throw error;
+        setIsLiked(true);
+
+        // После успешного добавления в избранное
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("favorites_count")
+          .eq("id", user.id)
+          .single();
+
+        if (!profileError && profile) {
+          await supabase
+            .from("profiles")
+            .update({
+              favorites_count: (profile.favorites_count || 0) + 1,
+            })
+            .eq("id", user.id);
+        }
+      } else {
+        // Удаление из избранного
+        const { error } = await supabase.from("favorites").delete().match({
+          user_id: user.id,
+          response: quotes[currentIndex],
+        });
+
+        if (error) throw error;
+        setIsLiked(false);
+      }
+    } catch (error) {
+      console.error("Ошибка при работе с избранным:", error);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        navigate("/login");
+        return;
+      }
+
+      // Логика для обработки шаринга цитаты
+      // Например, увеличение счетчика шарингов в профиле пользователя
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("shares_count")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      await supabase
+        .from("profiles")
+        .update({
+          shares_count: (profile.shares_count || 0) + 1,
+        })
+        .eq("id", user.id);
+
+      // Здесь можно добавить дополнительную логику, например, открытие окна шаринга
+      console.log("Цитата успешно поделена!");
+    } catch (error) {
+      console.error("Ошибка при шаринге цитаты:", error);
     }
   };
 
@@ -51,9 +140,18 @@ const QuoteCard = ({
     );
   }
 
+  // Проверяем что quotes это массив и что текущая цитата существует
+  if (!Array.isArray(quotes) || !quotes[currentIndex]) {
+    return <div>Загрузка...</div>;
+  }
+
+
   return (
     <div className={styles.cardContainer}>
-      <div className={styles.cardStack} style={{ position: "relative", minHeight: 200 }}>
+      <div
+        className={styles.cardStack}
+        style={{ position: "relative", minHeight: 200 }}
+      >
         {loading ? (
           <motion.div
             key="loading"
@@ -105,7 +203,8 @@ const QuoteCard = ({
                   dragElastic={0.95}
                   whileDrag={{
                     scale: 1.09,
-                    rotate: (dragInfo) => dragInfo ? dragInfo.point.x / 10 : 0,
+                    rotate: (dragInfo) =>
+                      dragInfo ? dragInfo.point.x / 10 : 0,
                     boxShadow: "0 20px 60px rgba(0,0,0,0.40)",
                   }}
                   onDragEnd={(e, info) => {
@@ -119,7 +218,9 @@ const QuoteCard = ({
                   }}
                   transition={{ type: "spring", stiffness: 120, damping: 18 }}
                 >
-                  <p className={styles.text}>{cleanQuote(quotes[currentIndex])}</p>
+                  <p className={styles.text}>
+                    {cleanQuote(quotes[currentIndex])}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -145,7 +246,9 @@ const QuoteCard = ({
                   &larr;
                 </button>
                 <span className={styles.counter}>
-                  {`${quotes.length ? currentIndex + 1 : 0} / ${quotes.length}`}
+                  {`${quotes.length - 1 ? currentIndex + 1 : 0} / ${
+                    quotes.length - 1
+                  }`}
                 </span>
                 <button
                   onClick={() => currentIndex < quotes.length - 1 && onNext()}
@@ -156,17 +259,34 @@ const QuoteCard = ({
               </div>
               <div className={styles.actionButtons}>
                 <div className={styles.buttonWrapper}>
-                  <button className={styles.actionButton} onClick={handleCopy}>
+                  <button
+                    className={styles.actionButton}
+                    onClick={handleCopy}
+                    title="Копировать"
+                  >
                     <img src={iconCopy} alt="Копировать" />
                   </button>
                   {showCopyPopover && (
                     <div className={styles.popover}>Скопировано!</div>
                   )}
                 </div>
-                <button className={styles.actionButton}>
-                  <img src={iconSaved} alt="Нравится" />
+                <button
+                  className={`${styles.actionButton} ${
+                    isLiked ? styles.liked : ""
+                  }`}
+                  onClick={handleLike}
+                  title={isLiked ? "Убрать из избранного" : "В избранное"}
+                >
+                  <img
+                    src={isLiked ? iconLiked : iconSaved}
+                    alt={isLiked ? "Убрать из избранного" : "В избранное"}
+                  />
                 </button>
-                <button className={styles.actionButton}>
+                <button
+                  className={styles.actionButton}
+                  title="Поделиться"
+                  onClick={handleShare}
+                >
                   <img src={iconShare} alt="Поделиться" />
                 </button>
               </div>

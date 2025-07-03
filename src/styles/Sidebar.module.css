@@ -1,26 +1,46 @@
 .sidebar {
-  min-height: 98%; /* Устанавливаем высоту на 100% экрана */
+  height: 95vh; /* Изменяем на 100vh вместо 98% */
   display: flex;
   flex-direction: column;
-  padding: 0;
   background-color: #2e2e35;
-  margin: 0;
-  border-radius: 16px;
+  border-radius: 24px;
+  position: relative; /* Добавляем для позиционирования профиля */
+  overflow: hidden; /* Скрываем выход за пределы */
+}
+
+/* Шапка */
+.header {
+  flex-shrink: 0; /* Предотвращаем сжатие шапки */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Распределяем элементы по краям */
+  padding: 20px 20px 0 20px;
+  margin-bottom: 20px;
+}
+
+/* Контейнер для прокручиваемого контента */
+.scrollableContent {
+  flex: 1;
   overflow-y: auto;
-  overflow-x: hidden; /* Добавляем вертикальный скролл, если содержимое превышает высоту */
+  overflow-x: hidden;
+  padding-bottom: 100px; /* Увеличиваем отступ для профиля */
+  height: calc(100vh - 180px); /* Высота минус шапка и профиль */
+  margin-right: 2px; /* Отступ для скролла */
 }
 
-.sidebar::-webkit-scrollbar {
-  width: 8px; /* Ширина скроллбара */
+/* Стили скролла */
+.scrollableContent::-webkit-scrollbar {
+  width: 6px; /* Ширина скроллбара */
 }
 
-.sidebar::-webkit-scrollbar-thumb {
+.scrollableContent::-webkit-scrollbar-thumb {
   background-color: #666; /* Цвет ползунка */
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
-.sidebar::-webkit-scrollbar-track {
-  background-color: #1a1a1a; /* Цвет фона скроллбара */
+.scrollableContent::-webkit-scrollbar-track {
+  background-color: transparent;
+  margin: 5px;
 }
 
 .sidebar a {
@@ -49,7 +69,7 @@
   padding: 12px 12px 12px 40px; /* Добавляем отступ слева для иконки */
   width: 100%;
   border-radius: 6px;
- 
+
   background: #262626;
   border: none;
   color: white;
@@ -71,6 +91,7 @@
 
 .menu {
   flex-grow: 1;
+  padding: 0 10px; /* Добавляем отступы по бокам */
 }
 
 .section {
@@ -91,6 +112,8 @@
   text-align: left;
   cursor: pointer;
   font-size: 16px;
+  margin: 2px 0; /* Добавляем отступы между кнопками */
+  border-radius: 8px; /* Скругление для кнопок */
 }
 .menu button:hover {
   background-color: #35353e;
@@ -115,9 +138,13 @@
   object-fit: cover;
 }
 
-.email {
-  font-size: 12px;
+.nickname .email p{
+  font-size: 13px;
   color: white;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
 }
 
 .nickname p {
@@ -134,7 +161,7 @@
   padding: 0 18px;
 }
 .closeSidebarBtn {
-  background-color: #333;
+  background-color: transparent;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -143,11 +170,24 @@
 }
 .closeSidebarBtn img {
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 }
 .closeSidebarBtn:hover {
   background-color: #555;
+}
+
+/* Контейнер для профиля */
+.profileContainer {
+  flex-shrink: 0; /* Предотвращаем сжатие */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2e2e35; /* Тот же цвет, что и сайдбар */
+  padding: 10px 0;
+  border-top: 1px solid #404040; /* Опционально: разделительная линия */
+  z-index: 10; /* Поднимаем над скроллом */
 }
 
 /* Адаптивная верстка для телефонов */
@@ -219,15 +259,6 @@
 }
 
 .buttonContent img {
-  width: 20px; /* Устанавливаем фиксированный размер изображения */
-  height: 20px;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* Распределяем элементы по краям */
-  padding: 0 0 0 20px;
-  padding-top: 20px;
-  margin: 20px 0; /* Отступ снизу */
+  width: 25px; /* Устанавливаем фиксированный размер изображения */
+  height: 25px;
 }

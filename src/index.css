@@ -3,6 +3,19 @@ body {
     margin: 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
+  .pageWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
+}
+
+@media (min-width: 1024px) {
+  .pageWrapper {
+    grid-template-columns: 1fr 300px;
+  }
+}
 /*   
   .app {
     background-color: #1a202c;

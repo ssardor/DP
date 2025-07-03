@@ -1,8 +1,16 @@
-import { useState, } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { t } from "../utils/i18n";
 import styles from "../styles/RandomQuote.module.css";
 import iconCopy from "../img/IconCopy.svg";
-import iconSaved from "../img/heart.svg";
+import iconSaved from "../img/heart.svg"; // Пустое сердце
 import iconShare from "../img/IconShare.svg";
+import iconLiked from "../img/heartLiked.png"; // Заполненное сердце
+import { supabase } from "../supabaseClient"; // путь поправьте, если отличается
+// Инициализация клиента Supabase
+// const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+// const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+// const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Локальный массив цитат
 const localQuotes = [
@@ -33,20 +41,29 @@ const RandomQuote = () => {
   const [loading, setLoading] = useState(false);
   const [showCopyPopover, setShowCopyPopover] = useState(false);
   const [error, setError] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
 
   // framer-motion controls
 
-  
-
   // Получить случайную цитату из массива
-  const fetchRandomQuote = () => {
+  const fetchRandomQuote = async () => {
     setLoading(true);
     setError(null);
-    setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * localQuotes.length);
-      setQuote(localQuotes[randomIndex]);
+    try {
+      const { data, error } = await supabase.from("quotes").select("*");
+      if (error) throw error;
+      if (data && data.length > 0) {
+        const random = data[Math.floor(Math.random() * data.length)];
+        setQuote({ content: random.quote_text, author: random.author }); // исправлено!
+      } else {
+        setError("Нет цитат в базе");
+      }
+    } catch (err) {
+      setError("Ошибка загрузки цитаты");
+    } finally {
       setLoading(false);
-    }, 400); // имитация загрузки
+    }
   };
 
   const handleCopy = async () => {
@@ -59,6 +76,48 @@ const RandomQuote = () => {
       console.error("Ошибка при копировании:", err);
     }
   };
+
+  const handleLike = async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        navigate("/login");
+        return;
+      }
+
+      if (!isLiked) {
+        const { error } = await supabase.from("favorites").insert({
+          user_id: user.id,
+          query: "Случайная цитата",
+          response: `"${quote.content}" — ${quote.author}`,
+          created_at: new Date().toISOString(),
+        });
+
+        if (error) throw error;
+        setIsLiked(true);
+      } else {
+        const { error } = await supabase
+          .from("favorites")
+          .delete()
+          .match({
+            user_id: user.id,
+            response: `"${quote.content}" — ${quote.author}`,
+          });
+
+        if (error) throw error;
+        setIsLiked(false);
+      }
+    } catch (error) {
+      console.error("Ошибка при работе с избранным:", error);
+    }
+  };
+
+  // Сброс лайка при смене цитаты
+  useEffect(() => {
+    setIsLiked(false);
+  }, [quote]);
 
   return (
     <div className={styles.container}>
@@ -84,8 +143,16 @@ const RandomQuote = () => {
                   <div className={styles.popover}>Скопировано!</div>
                 )}
               </div>
-              <button className={styles.actionButton}>
-                <img src={iconSaved} alt="Нравится" />
+              <button
+                className={`${styles.actionButton} ${
+                  isLiked ? styles.liked : ""
+                }`}
+                onClick={handleLike}
+              >
+                <img
+                  src={isLiked ? iconLiked : iconSaved}
+                  alt={isLiked ? "Убрать из избранного" : "В избранное"}
+                />
               </button>
               <button className={styles.actionButton}>
                 <img src={iconShare} alt="Поделиться" />
@@ -103,7 +170,7 @@ const RandomQuote = () => {
           style={{ position: "relative" }}
         >
           <span className={styles.btnText}>
-            {loading ? "Генерация..." : "Случайная цитата"}
+            {loading ? t("generating") : t("randomQuote")}
           </span>
           <div className={styles.gradientBg}></div>
         </button>

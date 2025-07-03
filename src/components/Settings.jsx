@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import styles from "../styles/Settings.module.css";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import LanguageModal from "./LanguageModal";
 
 const Settings = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [push, setPush] = useState(false);
+  const [showLang, setShowLang] = useState(false);
+
+  const handleLanguageClick = () => setShowLang((v) => !v);
 
   return (
     <div className={styles.settingsWrapper}>
@@ -50,11 +54,13 @@ const Settings = () => {
 
       <div className={styles.settingsGroup}>
         <div className={styles.settingsGroupTitle}>ACCOUNT</div>
-        <button className={styles.settingsRowBtn}>Language</button>
+        <button className={styles.settingsRowBtn} onClick={handleLanguageClick}>
+          Языки
+        </button>
         <button className={styles.settingsRowBtn}>Privacy</button>
-        
+
         <Link to="/plans">
-             <button className={styles.upgradeBtn}>Upgrade to Premium</button>
+          <button className={styles.upgradeBtn}>Upgrade to Premium</button>
         </Link>
       </div>
 
@@ -63,7 +69,19 @@ const Settings = () => {
         <button className={styles.settingsRowBtn}>Help Center</button>
         <button className={styles.settingsRowBtn}>About</button>
       </div>
+
+      {showLang && (
+        <LanguageModal
+          current={localStorage.getItem("dw_lang") || "ru"}
+          onClose={() => setShowLang(false)}
+          onApply={(lang) => {
+            localStorage.setItem("dw_lang", lang);
+            setShowLang(false);
+            window.location.reload();
+          }}
+        />
+      )}
     </div>
   );
-}
+};
 export default Settings;

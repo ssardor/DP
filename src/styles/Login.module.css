@@ -1,0 +1,138 @@
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.loginWrapper {
+  height: 100vh;
+  background: #111119;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow: hidden; /* убирает скролл */
+}
+
+.logoBlock {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 2.2rem;
+}
+
+.logoCircle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  box-shadow: 0 4px 24px #ff4d5d33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.7rem;
+  text-align: center;
+}
+
+.subtitle {
+  color: #aaa;
+  font-size: 0.98rem;
+  margin-bottom: 2.2rem;
+  text-align: center;
+}
+
+.loginBtn {
+  width: 100%;
+  max-width: 340px;
+  background: #23232b;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 15px 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: background 0.18s;
+  box-shadow: 0 2px 12px #23232b22;
+}
+.loginBtn:hover {
+  background: #333;
+}
+
+.btnIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+  margin: 1.2rem 0;
+  color: #333;
+  font-size: 0.98rem;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1.5px;
+  background: #333;
+  margin: 0 10px;
+  border-radius: 2px;
+}
+.divider span {
+  color: #888;
+  font-size: 0.98rem;
+}
+
+.loginLink {
+  margin-top: 2.2rem;
+  color: #888;
+  font-size: 0.98rem;
+  text-align: center;
+}
+.linkAccent {
+  color: #ffd700;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  cursor: pointer;
+  transition: color 0.18s;
+}
+.linkAccent:hover {
+  color: #ffe066;
+}
+
+@media (max-width: 500px) {
+  .logoText {
+    font-size: 1.2rem;
+  }
+  .loginBtn {
+    font-size: 1rem;
+    padding: 13px 0;
+  }
+  .divider {
+    font-size: 0.93rem;
+  }
+}

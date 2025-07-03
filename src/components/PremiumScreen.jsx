@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { t } from "../utils/i18n";
 import styles from "../styles/PremiumScreen.module.css";
 import planStyles from "../styles/PlansScreen.module.css";
 
@@ -200,10 +201,8 @@ export default function PremiumScreen() {
             />
           </svg>
         </motion.div>
-        <h1 className={styles.title}>Upgrade to Premium</h1>
-        <p className={styles.subtitle}>
-          Unlock the full potential of DeepWisdom
-        </p>
+        <h1 className={styles.title}>{t("upgrade")}</h1>
+        <p className={styles.subtitle}>{t("unlockFullPotential")}</p>
       </motion.div>
       <div className={styles.perksList}>
         {perks.map((perk, i) => (
@@ -234,7 +233,7 @@ export default function PremiumScreen() {
         transition={{ duration: 0.7, type: "spring" }}
         viewport={{ once: true }}
       >
-        <h2 className={planStyles.plansTitle}>Choose your plan</h2>
+        <h2 className={planStyles.plansTitle}>{t("choosePlan")}</h2>
         <div className={planStyles.plansList}>
           {plans.map((plan, i) => (
             <motion.div
@@ -285,7 +284,7 @@ export default function PremiumScreen() {
                   color: "#fff",
                 }}
               >
-                Subscribe
+                {t("subscribe")}
               </motion.button>
             </motion.div>
           ))}

@@ -1,0 +1,219 @@
+.favoritesContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #18181a;
+  overflow: hidden;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background-color: #18181a;
+  padding: 20px;
+  border-bottom: 1px solid #2e2e35;
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.header h1 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.quotesList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.quoteCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.quoteContent {
+  background-color: #2e2e35;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.query {
+  color: #808080;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.response {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.response p::before {
+  content: '"';
+}
+
+.response p::after {
+  content: '"';
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 4px;
+}
+
+.date {
+  color: #808080;
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  color: #808080;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  transition: all 0.2s ease;
+}
+
+.actions button:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #808080;
+}
+
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Добавим спиннер для loading */
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #2e2e35;
+  border-top: 3px solid #808080;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Стили для скроллбара */
+.quotesList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.quotesList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.quotesList::-webkit-scrollbar-thumb {
+  background-color: #2e2e35;
+  border-radius: 4px;
+}
+
+.quotesList::-webkit-scrollbar-thumb:hover {
+  background-color: #3e3e45;
+}
+
+@media (max-width: 768px) {
+  .favoritesContainer {
+    padding: 15px;
+  }
+
+  .quoteCard {
+    padding: 15px;
+  }
+
+  .actions {
+    top: 15px;
+    right: 15px;
+  }
+
+  .quotesList {
+    padding: 16px;
+  }
+
+  .quoteContent {
+    padding: 20px;
+  }
+
+  .response {
+    font-size: 15px;
+  }
+}
+
+/* Анимации для Profile.jsx */
+.profilePage {
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.page-enter {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.page-exit {
+  animation: fadeOutUp 0.6s ease-in forwards;
+}

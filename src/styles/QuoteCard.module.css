@@ -87,8 +87,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg);}
-  100% { transform: rotate(360deg);}
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .controlsWrapper {
@@ -149,12 +153,23 @@
 }
 
 .actionButton:hover {
-  background-color: #333;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .actionButton img {
   width: 24px;
   height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.actionButton.liked {
+  color: #ff4757;
+}
+
+.actionButton.liked img {
+  filter: invert(37%) sepia(93%) saturate(3836%) hue-rotate(337deg)
+    brightness(99%) contrast(106%);
+  transform: scale(1.1);
 }
 
 .buttonWrapper {
